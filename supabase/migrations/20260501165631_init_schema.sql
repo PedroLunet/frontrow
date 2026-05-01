@@ -1,8 +1,10 @@
+CREATE EXTENSION IF NOT EXISTS postgis SCHEMA extensions;
+
 -- 1. Create Base Tables
 CREATE TABLE "venues"(
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "coordinates" geography NOT NULL,
+    "coordinates" extensions.geography NOT NULL,
     "created_at" TIMESTAMP(0) WITH TIME zone NOT NULL,
     "mapbox_id" TEXT NOT NULL
 );
