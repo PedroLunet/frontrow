@@ -1,5 +1,5 @@
-<script>
-	import { supabase } from '$lib/supabaseClient';
+<script lang="ts">
+	import { supabase } from '$lib/supabaseclient.js';
 
 	let email = $state('');
 	let otp = $state('');
@@ -7,7 +7,7 @@
 	let loading = $state(false);
 	let message = $state('');
 
-	async function requestOtp(event) {
+	async function requestOtp(event: Event) {
 		if (event) event.preventDefault();
 
 		const cleanEmail = email.toLowerCase().trim();
@@ -25,15 +25,15 @@
 
 			message = 'Code sent! Grab the 6 digits from Mailpit.';
 			step = 2;
-		} catch (err) {
+		} catch (err: unknown) {
 			console.error('Auth Error:', err);
-			message = err.message || 'Failed to send code. Please try again.';
+			message = err instanceof Error ? err.message : 'Failed to send code. Please try again.';
 		} finally {
 			loading = false;
 		}
 	}
 
-	async function verifyOtp(event) {
+	async function verifyOtp(event: Event) {
 		if (event) event.preventDefault();
 
 		const cleanEmail = email.toLowerCase().trim();
@@ -52,9 +52,9 @@
 			if (error) throw error;
 
 			message = '🎉 Logged in successfully!';
-		} catch (err) {
+		} catch (err: unknown) {
 			console.error('Verification Error:', err);
-			message = err.message || 'Invalid code. Please try again.';
+			message = err instanceof Error ? err.message : 'Invalid code. Please try again.';
 		} finally {
 			loading = false;
 		}
