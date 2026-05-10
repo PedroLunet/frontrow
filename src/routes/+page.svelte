@@ -1,14 +1,12 @@
 <script lang="ts">
 	import Map from '$lib/components/map.svelte';
-	import Header from '$lib/components/Header.svelte';
+	import Header from '$lib/components/header.svelte';
 	import { onMount } from 'svelte';
-	import { supabase } from '$lib/supabaseClient';
+	import { supabase } from '$lib/supabaseclient.js';
 
-	// State to hold our venues
 	let venues = $state<any[]>([]);
 
 	onMount(async () => {
-		// Fetch all venues from the database
 		const { data, error } = await supabase.from('venues').select('*');
 
 		if (error) {
