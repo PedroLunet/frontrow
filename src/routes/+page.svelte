@@ -18,8 +18,8 @@
 	}
 </script>
 
-<main class="flex h-screen w-full flex-col bg-gray-100">
-	<nav class="relative z-10 flex items-center justify-between bg-white px-6 py-4 shadow-sm">
+<main class="flex h-screen w-full flex-col">
+	<nav class="relative z-10 flex items-center justify-between px-6 py-4">
 		<h1 class="text-xl font-bold tracking-tight text-black">FrontRow</h1>
 
 		<div>
@@ -44,7 +44,7 @@
 		</div>
 	</nav>
 
-	<div class="h-full w-full p-8">
+	<div class="h-full w-full p-6">
 		<Map />
 	</div>
 </main>
