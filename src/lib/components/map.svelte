@@ -70,14 +70,18 @@
 			const coords = parseWKBPoint(group.venue.coordinates);
 
 			if (coords) {
-				const el = document.createElement('div');
+				let marker;
 
-				el.className =
-					'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white shadow-lg ring-2 ring-white transition-transform hover:scale-110';
+				if (group.concerts.length === 1) {
+					marker = new mapboxgl.Marker({ color: 'orange' }).setLngLat(coords).addTo(map);
+				} else {
+					const el = document.createElement('div');
+					el.className =
+						'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white shadow-lg ring-2 ring-white transition-transform hover:scale-110';
+					el.innerText = group.concerts.length.toString();
 
-				el.innerText = group.concerts.length.toString();
-
-				const marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
+					marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
+				}
 
 				markers.push(marker);
 			}
