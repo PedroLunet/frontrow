@@ -4,7 +4,7 @@
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE_URL } from '$env/static/public';
 
-	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, venues = [] } = $props();
+	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, concerts = [] } = $props();
 
 	let mapContainer: HTMLElement;
 	let map: mapboxgl.Map;
@@ -47,16 +47,37 @@
 	});
 
 	$effect(() => {
-		if (!map || venues.length === 0) return;
+		if (!map || concerts.length === 0) return;
 
 		markers.forEach((m) => m.remove());
 		markers = [];
 
-		venues.forEach((venue) => {
-			const coords = parseWKBPoint(venue.coordinates);
+		const groupedByVenue: Record<string, any> = {};
+
+		concerts.forEach((concert) => {
+			const venueId = concert.venues.id;
+
+			if (!groupedByVenue[venueId]) {
+				groupedByVenue[venueId] = {
+					venue: concert.venues,
+					concerts: []
+				};
+			}
+			groupedByVenue[venueId].concerts.push(concert);
+		});
+
+		Object.values(groupedByVenue).forEach((group) => {
+			const coords = parseWKBPoint(group.venue.coordinates);
 
 			if (coords) {
-				const marker = new mapboxgl.Marker({ color: 'orange' }).setLngLat(coords).addTo(map);
+				const el = document.createElement('div');
+
+				el.className =
+					'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white shadow-lg ring-2 ring-white transition-transform hover:scale-110';
+
+				el.innerText = group.concerts.length.toString();
+
+				const marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
 
 				markers.push(marker);
 			}
