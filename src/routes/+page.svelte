@@ -44,7 +44,7 @@
 		</div>
 	</nav>
 
-	<div class="mb-6 h-[400px] w-full lg:h-[500px]">
+	<div class="h-full w-full p-8">
 		<Map />
 	</div>
 </main>
