@@ -13,7 +13,6 @@
 			console.error('🚨 Error fetching venues:', error);
 		} else {
 			venues = data || [];
-			console.log('📍 Venues loaded:', venues);
 		}
 	});
 </script>
