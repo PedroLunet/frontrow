@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { supabase } from '$lib/supabaseclient.js';
+	import Map from '$lib/components/Map.svelte';
 
 	let userEmail = $state<string | null>(null);
 
 	onMount(async () => {
-		// Check who is visiting the map
 		const { data } = await supabase.auth.getUser();
 		if (data.user) {
 			userEmail = data.user.email || null;
@@ -14,7 +14,7 @@
 
 	async function handleLogout() {
 		await supabase.auth.signOut();
-		userEmail = null; // Instantly update the UI
+		userEmail = null;
 	}
 </script>
 
@@ -44,7 +44,7 @@
 		</div>
 	</nav>
 
-	<div class="flex flex-1 items-center justify-center bg-gray-200">
-		<p class="text-lg font-medium text-gray-400">[ Mapbox will go here ]</p>
+	<div class="mb-6 h-[400px] w-full lg:h-[500px]">
+		<Map />
 	</div>
 </main>
