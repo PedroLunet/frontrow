@@ -4,15 +4,17 @@
 	import { onMount } from 'svelte';
 	import { supabase } from '$lib/supabaseclient.js';
 
-	let venues = $state<any[]>([]);
+	let concerts = $state<any[]>([]);
 
 	onMount(async () => {
-		const { data, error } = await supabase.from('venues').select('*');
+		const { data, error } = await supabase
+			.from('concerts')
+			.select('*, venues(id, name, coordinates)');
 
 		if (error) {
-			console.error('🚨 Error fetching venues:', error);
+			console.error('🚨 Error fetching concerts:', error);
 		} else {
-			venues = data || [];
+			concerts = data || [];
 		}
 	});
 </script>
@@ -20,6 +22,6 @@
 <main class="flex h-screen w-full flex-col">
 	<Header />
 	<div class="h-full w-full p-6 pt-2">
-		<Map {venues} />
+		<Map {concerts} />
 	</div>
 </main>
