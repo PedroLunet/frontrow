@@ -21,10 +21,14 @@
 		} = supabase.auth.onAuthStateChange((event, newSession) => {
 			session = newSession;
 
-			if (event === 'SIGNED_IN') {
-				goto('/dashboard');
+			const currentPath = window.location.pathname;
+
+			if (event === 'SIGNED_IN' && currentPath === '/login') {
+				goto('/');
 			} else if (event === 'SIGNED_OUT') {
-				goto('/login'); // Assuming your login page is at /login
+				if (currentPath !== '/' && currentPath !== '/login') {
+					goto('/');
+				}
 			}
 		});
 
