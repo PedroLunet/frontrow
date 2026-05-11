@@ -40,7 +40,7 @@
 			container: mapContainer,
 			style: styleUrl,
 			center: [-8.6109, 41.1496],
-			zoom: 17,
+			zoom: 17.5,
 			pitch: 70
 		});
 
