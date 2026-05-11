@@ -83,7 +83,7 @@
 						props: { concert: group.concerts[0] }
 					});
 
-					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setDOMContent(
+					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false, maxWidth: '300px' }).setDOMContent(
 						popupNode
 					);
 
