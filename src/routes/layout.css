@@ -1,3 +1,9 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+.mapboxgl-popup-content {
+	padding: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+}
