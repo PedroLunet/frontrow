@@ -4,6 +4,7 @@
 
 @theme {
 	--color-accent: #e0b0a9;
+  --color-text: #111111;
 }
 
 .mapboxgl-popup-content {
