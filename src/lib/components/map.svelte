@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { mount } from 'svelte';
 	import mapboxgl from 'mapbox-gl';
 	import 'mapbox-gl/dist/mapbox-gl.css';
 	import { PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE_URL } from '$env/static/public';
+
+	import Popup from './popup.svelte';
 
 	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, concerts = [] } = $props();
 
@@ -73,7 +76,21 @@
 				let marker;
 
 				if (group.concerts.length === 1) {
-					marker = new mapboxgl.Marker({ color: 'orange' }).setLngLat(coords).addTo(map);
+					const popupNode = document.createElement('div');
+
+					mount(Popup, {
+						target: popupNode,
+						props: { concert: group.concerts[0] }
+					});
+
+					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setDOMContent(
+						popupNode
+					);
+
+					marker = new mapboxgl.Marker({ color: 'orange' })
+						.setLngLat(coords)
+						.setPopup(popup)
+						.addTo(map);
 				} else {
 					const el = document.createElement('div');
 					el.className =
