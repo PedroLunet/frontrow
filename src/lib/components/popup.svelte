@@ -125,9 +125,18 @@
 			<MapPin size={16} class="text-primary" />
 			<p class="text-sm text-text">{concert.venues?.name}</p>
 		</div>
-		<p class="mb-4 text-sm leading-tight font-extralight tracking-tight text-text">
-			{concert.description}
-		</p>
+		<button
+			type="button"
+			onclick={() => console.log('TODO: Open full description popup')}
+			class="group mb-4 w-full text-left focus:outline-none"
+		>
+			<p
+				class="line-clamp-3 text-sm leading-tight font-extralight tracking-tight text-text transition-opacity group-hover:opacity-70"
+			>
+				{concert.description}
+			</p>
+			<span class="text-xs font-extralight text-primary group-hover:underline"> Read more </span>
+		</button>
 
 		<div class="mt-2 flex h-10 w-full">
 			<div
