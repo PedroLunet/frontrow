@@ -3,9 +3,10 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --color-primary: #AE1700;
+	--color-primary: #ae1700;
 	--color-accent: #e0b0a9;
-  --color-text: #111111;
+	--color-text: #111111;
+	--color-text-white: #eaeaea;
 }
 
 .mapboxgl-popup-content {
