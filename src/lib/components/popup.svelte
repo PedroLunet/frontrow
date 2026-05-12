@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { MapPin, X } from 'lucide-svelte';
+	import { MapPin, X, Ticket, CheckCircle2 } from 'lucide-svelte';
 
 	let { concert, closePopup } = $props();
+
+	let isGoing = $state(false);
 
 	const formattedDate = new Date(concert.date).toLocaleDateString('en-US', {
 		month: 'short',
@@ -49,18 +51,28 @@
 		<h3 class="mb-1 text-base leading-tight font-bold tracking-tight text-primary uppercase">
 			{concert.artist}
 		</h3>
-		<div class="mb-1 flex flex-row items-center gap-1 font-extralight">
+		<div class="mb-2 flex flex-row items-center gap-1 font-extralight">
 			<MapPin size={16} class="text-primary" />
 			<p class="text-sm text-text">{concert.venues?.name}</p>
 		</div>
-		<p class="mb-1 text-sm leading-tight font-extralight tracking-tight text-text">
+		<p class="mb-4 text-sm leading-tight font-extralight tracking-tight text-text">
 			{concert.description}
 		</p>
 
 		<button
-			class="mt-4 w-full rounded-md bg-black py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+			onclick={() => (isGoing = !isGoing)}
+			class="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-sm font-light transition-all duration-300 focus:outline-none
+        {isGoing
+				? 'border border-primary bg-primary text-white'
+				: 'border border-primary text-primary'}"
 		>
-			View Details
+			{#if isGoing}
+				<CheckCircle2 size={18} class="animate-in zoom-in duration-300" />
+				<span>You're Going!</span>
+			{:else}
+				<Ticket size={18} class="transition-transform duration-300 group-hover:-rotate-12" />
+				<span>Mark as Going</span>
+			{/if}
 		</button>
 	</div>
 </div>
