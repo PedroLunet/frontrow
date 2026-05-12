@@ -14,17 +14,28 @@
 	class="mb-4 flex min-w-64 flex-col overflow-hidden rounded-4xl border-2 border-accent bg-white font-sans text-gray-900"
 >
 	{#if concert.image_url}
-		<img src={concert.image_url} alt={concert.name} class="h-38 rounded-4xl object-cover p-1.5" />
-	{:else}
-		<div class="flex h-32 w-full items-center justify-center bg-gray-200">
-			<span class="text-gray-400">No image</span>
+		<div class="relative overflow-hidden p-1.5">
+			<img
+				src={concert.image_url}
+				alt={concert.name}
+				class="h-32 w-full rounded-4xl object-cover"
+			/>
+
+			<div
+				class="absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 bg-text/60 px-2.5 py-1.5 shadow-xl backdrop-blur-md"
+			>
+				<div
+					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
+				></div>
+
+				<p class="relative z-10 text-xs text-text-white">
+					{formattedDate}
+				</p>
+			</div>
 		</div>
 	{/if}
 
 	<div class="p-4 pt-1">
-		<!-- <p class="mb-1 text-xs font-bold tracking-wider text-orange-500 uppercase">
-			{formattedDate}
-		</p> -->
 		<h3 class="mb-1 text-base leading-tight font-bold tracking-tight text-primary uppercase">
 			{concert.artist}
 		</h3>
