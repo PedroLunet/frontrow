@@ -3,6 +3,7 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
+  --color-primary: #AE1700;
 	--color-accent: #e0b0a9;
   --color-text: #111111;
 }
