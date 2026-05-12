@@ -83,20 +83,20 @@
 </script>
 
 <div
-	class="mb-4 flex min-w-64 flex-col overflow-hidden rounded-4xl border-2 border-accent bg-white font-sans text-gray-900"
+	class="mb-4 flex min-w-64 flex-col overflow-hidden rounded-4xl border-2 border-accent bg-white font-sans text-text"
 >
 	{#if concert.image_url}
 		<div class="relative overflow-hidden p-1.5">
 			<img
 				src={concert.image_url}
 				alt={concert.name}
-				class="h-32 w-full rounded-4xl object-cover"
+				class="h-32 w-full rounded-3xl object-cover"
 			/>
 
 			<button
 				onclick={closePopup}
 				aria-label="Close"
-				class="absolute top-4 right-4 flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-[0.5px] border-white/20 bg-text/60 shadow-xl backdrop-blur-md transition-all hover:scale-105 hover:bg-text/80 active:scale-95"
+				class="absolute top-4 right-4 flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-[0.5px] border-white/20 bg-text/60 backdrop-blur-md transition-all hover:scale-105 hover:bg-text/80 active:scale-95"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
@@ -105,7 +105,7 @@
 			</button>
 
 			<div
-				class="absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 bg-text/60 px-2.5 py-1.5 shadow-xl backdrop-blur-md"
+				class="absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 bg-text/60 px-2.5 py-1.5 backdrop-blur-md"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
