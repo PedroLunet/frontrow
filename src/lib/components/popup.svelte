@@ -10,14 +10,14 @@
 		isGoing = true;
 		setTimeout(() => {
 			showCancel = true;
-		}, 400);
+		}, 350);
 	}
 
 	function handleCancel() {
 		showCancel = false;
 		setTimeout(() => {
 			isGoing = false;
-		}, 400);
+		}, 350);
 	}
 
 	const formattedDate = new Date(concert.date).toLocaleDateString('en-US', {
@@ -74,21 +74,23 @@
 			{concert.description}
 		</p>
 
-		<div class="mt-2 flex h-[46px] w-full">
-			<button
-				onclick={handleCancel}
-				aria-label="Cancel Going"
-				class="flex shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-primary bg-transparent text-primary transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] hover:bg-primary/10 focus:outline-none
-					{showCancel
-					? 'pointer-events-auto mr-2 w-[46px] opacity-100'
-					: 'pointer-events-none mr-0 w-0 border-transparent opacity-0'}"
+		<div class="mt-2 flex h-10 w-full">
+			<div
+				class="flex shrink-0 overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
+        {showCancel ? 'pointer-events-auto w-12 opacity-100' : 'pointer-events-none w-0 opacity-0'}"
 			>
-				<X size={18} strokeWidth={3} class="shrink-0" />
-			</button>
+				<button
+					onclick={handleCancel}
+					aria-label="Cancel Going"
+					class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-primary bg-transparent text-primary transition-colors hover:bg-primary/10 focus:outline-none"
+				>
+					<X size={18} strokeWidth={3} />
+				</button>
+			</div>
 
 			<button
 				onclick={!isGoing ? handleGoing : undefined}
-				class="group relative flex flex-1 overflow-hidden rounded-2xl border-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] focus:outline-none
+				class="group relative flex flex-1 overflow-hidden rounded-2xl border transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] focus:outline-none
 					{isGoing
 					? 'cursor-default border-primary bg-primary text-white'
 					: 'cursor-pointer border-primary bg-transparent text-primary hover:bg-primary/5'}"
