@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { MapPin } from 'lucide-svelte';
+	import { MapPin, X } from 'lucide-svelte';
 
-	let { concert } = $props();
+	let { concert, closePopup } = $props();
 
 	const formattedDate = new Date(concert.date).toLocaleDateString('en-US', {
 		month: 'short',
@@ -21,13 +21,23 @@
 				class="h-32 w-full rounded-4xl object-cover"
 			/>
 
+			<button
+				onclick={closePopup}
+				aria-label="Close"
+				class="absolute top-4 right-4 flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-[0.5px] border-white/20 bg-text/60 shadow-xl backdrop-blur-md transition-all hover:scale-105 hover:bg-text/80 active:scale-95"
+			>
+				<div
+					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
+				></div>
+				<X size={14} strokeWidth={3} class="relative z-10 text-text-white" />
+			</button>
+
 			<div
 				class="absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 bg-text/60 px-2.5 py-1.5 shadow-xl backdrop-blur-md"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
 				></div>
-
 				<p class="relative z-10 text-xs text-text-white">
 					{formattedDate}
 				</p>

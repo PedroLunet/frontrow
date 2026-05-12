@@ -78,14 +78,17 @@
 				if (group.concerts.length === 1) {
 					const popupNode = document.createElement('div');
 
+					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false });
+
 					mount(Popup, {
 						target: popupNode,
-						props: { concert: group.concerts[0] }
+						props: {
+							concert: group.concerts[0],
+							closePopup: () => popup.remove()
+						}
 					});
 
-					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false, maxWidth: '300px' }).setDOMContent(
-						popupNode
-					);
+					popup.setDOMContent(popupNode);
 
 					marker = new mapboxgl.Marker({ color: 'orange' })
 						.setLngLat(coords)
