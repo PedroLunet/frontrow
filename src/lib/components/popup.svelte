@@ -61,18 +61,26 @@
 
 		<button
 			onclick={() => (isGoing = !isGoing)}
-			class="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-sm font-light transition-all duration-300 focus:outline-none
-        {isGoing
-				? 'border border-primary bg-primary text-white'
-				: 'border border-primary text-primary'}"
+			class="group relative mt-2 flex h-[40px] w-full cursor-pointer overflow-hidden rounded-xl border border-primary text-sm font-light transition-colors duration-300 focus:outline-none
+				{isGoing ? 'bg-primary text-white shadow-sm' : 'bg-transparent text-primary hover:bg-primary/5'}"
 		>
-			{#if isGoing}
-				<CheckCircle2 size={18} class="animate-in zoom-in duration-300" />
-				<span>You're Going!</span>
-			{:else}
+			<div
+				class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-300 {isGoing
+					? 'scale-95 opacity-0'
+					: 'scale-100 opacity-100 delay-75'}"
+			>
 				<Ticket size={18} class="transition-transform duration-300 group-hover:-rotate-12" />
 				<span>Mark as Going</span>
-			{/if}
+			</div>
+
+			<div
+				class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-300 {isGoing
+					? 'scale-100 opacity-100 delay-75'
+					: 'scale-105 opacity-0'}"
+			>
+				<CheckCircle2 size={18} />
+				<span>You're Going!</span>
+			</div>
 		</button>
 	</div>
 </div>
