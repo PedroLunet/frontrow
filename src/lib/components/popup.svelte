@@ -4,6 +4,21 @@
 	let { concert, closePopup } = $props();
 
 	let isGoing = $state(false);
+	let showCancel = $state(false);
+
+	function handleGoing() {
+		isGoing = true;
+		setTimeout(() => {
+			showCancel = true;
+		}, 400);
+	}
+
+	function handleCancel() {
+		showCancel = false;
+		setTimeout(() => {
+			isGoing = false;
+		}, 400);
+	}
 
 	const formattedDate = new Date(concert.date).toLocaleDateString('en-US', {
 		month: 'short',
@@ -59,28 +74,45 @@
 			{concert.description}
 		</p>
 
-		<button
-			onclick={() => (isGoing = !isGoing)}
-			class="group relative mt-2 flex h-[40px] w-full cursor-pointer overflow-hidden rounded-xl border border-primary text-sm font-light transition-colors duration-300 focus:outline-none
-				{isGoing ? 'bg-primary text-white shadow-sm' : 'bg-transparent text-primary hover:bg-primary/5'}"
-		>
-			<div
-				class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-300 {isGoing
-					? 'scale-95 opacity-0'
-					: 'scale-100 opacity-100 delay-75'}"
+		<div class="mt-2 flex h-[46px] w-full">
+			<button
+				onclick={handleCancel}
+				aria-label="Cancel Going"
+				class="flex shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-primary bg-transparent text-primary transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] hover:bg-primary/10 focus:outline-none
+					{showCancel
+					? 'pointer-events-auto mr-2 w-[46px] opacity-100'
+					: 'pointer-events-none mr-0 w-0 border-transparent opacity-0'}"
 			>
-				<Ticket size={18} class="transition-transform duration-300 group-hover:-rotate-12" />
-				<span>Mark as Going</span>
-			</div>
+				<X size={18} strokeWidth={3} class="shrink-0" />
+			</button>
 
-			<div
-				class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-300 {isGoing
-					? 'scale-100 opacity-100 delay-75'
-					: 'scale-105 opacity-0'}"
+			<button
+				onclick={!isGoing ? handleGoing : undefined}
+				class="group relative flex flex-1 overflow-hidden rounded-2xl border-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] focus:outline-none
+					{isGoing
+					? 'cursor-default border-primary bg-primary text-white'
+					: 'cursor-pointer border-primary bg-transparent text-primary hover:bg-primary/5'}"
 			>
-				<CheckCircle2 size={18} />
-				<span>You're Going!</span>
-			</div>
-		</button>
+				<div
+					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
+					{isGoing ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}"
+				>
+					<Ticket
+						size={18}
+						strokeWidth={2.5}
+						class="transition-transform duration-400 group-hover:-rotate-12"
+					/>
+					<span class="text-sm font-bold tracking-tight">Mark as Going</span>
+				</div>
+
+				<div
+					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
+					{isGoing ? 'scale-100 opacity-100' : 'pointer-events-none scale-110 opacity-0'}"
+				>
+					<CheckCircle2 size={18} strokeWidth={2.5} />
+					<span class="text-sm font-bold tracking-tight">You're Going!</span>
+				</div>
+			</button>
+		</div>
 	</div>
 </div>
