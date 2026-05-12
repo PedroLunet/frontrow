@@ -11,6 +11,9 @@
 	let showCancel = $state(false);
 	let isLoading = $state(false);
 
+	// Reference for the native dialog element
+	let descriptionModal: HTMLDialogElement;
+
 	onMount(() => {
 		return userRsvpsStore.subscribe((rsvps) => {
 			isGoing = !!rsvps[concert.id];
@@ -80,6 +83,26 @@
 		day: 'numeric',
 		year: 'numeric'
 	});
+
+	// --- Dialog Animation State ---
+	let isDescriptionOpen = $state(false);
+
+	function openDescription() {
+		descriptionModal.showModal();
+		// requestAnimationFrame ensures the browser paints the dialog in the DOM
+		// before we flip the opacity to 1, triggering the CSS transition perfectly.
+		requestAnimationFrame(() => {
+			isDescriptionOpen = true;
+		});
+	}
+
+	function closeDescription() {
+		isDescriptionOpen = false; // Triggers the CSS fade/scale out
+		// Wait for the 300ms Tailwind transition to finish before removing from top-layer
+		setTimeout(() => {
+			descriptionModal.close();
+		}, 300);
+	}
 </script>
 
 <div
@@ -125,9 +148,10 @@
 			<MapPin size={16} class="text-primary" />
 			<p class="text-sm text-text">{concert.venues?.name}</p>
 		</div>
+
 		<button
 			type="button"
-			onclick={() => console.log('TODO: Open full description popup')}
+			onclick={openDescription}
 			class="group mb-4 w-full text-left focus:outline-none"
 		>
 			<p
@@ -160,14 +184,14 @@
 			<button
 				onclick={!isGoing ? handleGoing : undefined}
 				class="group relative flex flex-1 overflow-hidden rounded-2xl border transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)] focus:outline-none
-					{isGoing
+          {isGoing
 					? 'cursor-default border-primary bg-primary text-white'
 					: 'cursor-pointer border-primary bg-transparent text-primary hover:bg-primary/5'}"
 				disabled={isLoading}
 			>
 				<div
 					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
-					{isGoing ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}"
+          {isGoing ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}"
 				>
 					{#if isLoading}
 						<Loader size={18} strokeWidth={2.5} class="animate-spin" />
@@ -183,7 +207,7 @@
 
 				<div
 					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
-					{isGoing ? 'scale-100 opacity-100' : 'pointer-events-none scale-110 opacity-0'}"
+          {isGoing ? 'scale-100 opacity-100' : 'pointer-events-none scale-110 opacity-0'}"
 				>
 					<CircleCheck size={18} strokeWidth={2.5} />
 					<span class="text-sm font-bold tracking-tight">You're Going!</span>
@@ -192,3 +216,42 @@
 		</div>
 	</div>
 </div>
+
+<dialog
+	bind:this={descriptionModal}
+	oncancel={(e) => {
+		// Intercepts the ESC key so it animates out smoothly
+		e.preventDefault();
+		closeDescription();
+	}}
+	onclick={(e) => {
+		// Clicking the dimmed backdrop closes the modal
+		if (e.target === descriptionModal) closeDescription();
+	}}
+	class="m-auto w-[90vw] max-w-lg rounded-4xl border-2 border-accent bg-white p-0 shadow-2xl transition-all
+         duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] backdrop:transition-all
+         backdrop:duration-300 backdrop:ease-[cubic-bezier(0.2,0.8,0.2,1)] focus:outline-none
+         {isDescriptionOpen
+		? 'scale-100 opacity-100 backdrop:bg-text/40 backdrop:backdrop-blur-sm'
+		: 'scale-95 opacity-0 backdrop:bg-transparent backdrop:backdrop-blur-none'}"
+>
+	<div class="relative flex max-h-[80vh] flex-col p-6 pt-8 font-sans text-text">
+		<button
+			onclick={closeDescription}
+			aria-label="Close modal"
+			class="absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl bg-accent/20 text-text transition-colors hover:bg-accent/40 active:scale-95"
+		>
+			<X size={16} strokeWidth={3} />
+		</button>
+
+		<h3 class="mb-4 pr-6 text-xl font-bold tracking-tight text-primary uppercase">Description</h3>
+
+		<div class="overflow-y-auto pr-2">
+			<p
+				class="text-sm leading-relaxed font-extralight tracking-tight whitespace-pre-wrap text-text"
+			>
+				{concert.description}
+			</p>
+		</div>
+	</div>
+</dialog>
