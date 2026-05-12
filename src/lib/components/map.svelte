@@ -7,11 +7,12 @@
 
 	import Popup from './popup.svelte';
 
-	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, concerts = [] } = $props();
+	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, concerts = [], user = null } = $props();
 
 	let mapContainer: HTMLElement;
 	let map: mapboxgl.Map;
 	let markers: mapboxgl.Marker[] = [];
+	let lastConcertIds: string | null = null;
 
 	function parseWKBPoint(hexString: string) {
 		try {
@@ -50,11 +51,23 @@
 	});
 
 	$effect(() => {
-		if (!map || concerts.length === 0) return;
+		const currentIds = concerts.map((c) => c.id).join(',');
+		if (!map || concerts.length === 0 || currentIds === lastConcertIds) return;
+
+		lastConcertIds = currentIds;
 
 		markers.forEach((m) => m.remove());
 		markers = [];
 
+		if (!map.loaded()) {
+			map.once('load', () => createMarkers());
+			return;
+		}
+
+		createMarkers();
+	});
+
+	function createMarkers() {
 		const groupedByVenue: Record<string, any> = {};
 
 		concerts.forEach((concert) => {
@@ -84,7 +97,8 @@
 						target: popupNode,
 						props: {
 							concert: group.concerts[0],
-							closePopup: () => popup.remove()
+							closePopup: () => popup.remove(),
+							user
 						}
 					});
 
@@ -106,7 +120,7 @@
 				markers.push(marker);
 			}
 		});
-	});
+	}
 </script>
 
 <div

@@ -1,23 +1,78 @@
 <script lang="ts">
-	import { MapPin, X, Ticket, CircleCheck } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { MapPin, X, Ticket, CircleCheck, Loader } from 'lucide-svelte';
+	import { supabase } from '$lib/supabaseclient.js';
+	import { userRsvpsStore } from '$lib/stores.js';
 
-	let { concert, closePopup } = $props();
+	let { concert, closePopup, user = null } = $props();
 
 	let isGoing = $state(false);
 	let showCancel = $state(false);
+	let isLoading = $state(false);
 
-	function handleGoing() {
-		isGoing = true;
-		setTimeout(() => {
+	onMount(() => {
+		return userRsvpsStore.subscribe((rsvps) => {
+			isGoing = !!rsvps[concert.id];
+		});
+	});
+
+	$effect(() => {
+		if (isGoing) {
 			showCancel = true;
-		}, 350);
+		} else {
+			showCancel = false;
+		}
+	});
+
+	async function handleGoing() {
+		if (!user) {
+			goto('/login');
+			return;
+		}
+
+		isLoading = true;
+
+		const { error } = await supabase.from('user_concerts').insert({
+			id: crypto.randomUUID(),
+			concert_id: concert.id,
+			user_id: user.id,
+			created_at: new Date().toISOString()
+		});
+
+		isLoading = false;
+
+		if (error) {
+			console.error('Failed to RSVP:', error);
+			return;
+		}
+
+		userRsvpsStore.update((rsvps) => ({ ...rsvps, [concert.id]: true }));
 	}
 
-	function handleCancel() {
-		showCancel = false;
-		setTimeout(() => {
-			isGoing = false;
-		}, 350);
+	async function handleCancel() {
+		if (!user) return;
+
+		isLoading = true;
+
+		const { error } = await supabase
+			.from('user_concerts')
+			.delete()
+			.eq('concert_id', concert.id)
+			.eq('user_id', user.id);
+
+		isLoading = false;
+
+		if (error) {
+			console.error('Failed to cancel RSVP:', error);
+			return;
+		}
+
+		userRsvpsStore.update((rsvps) => {
+			const next = { ...rsvps };
+			delete next[concert.id];
+			return next;
+		});
 	}
 
 	const formattedDate = new Date(concert.date).toLocaleDateString('en-US', {
@@ -82,9 +137,14 @@
 				<button
 					onclick={handleCancel}
 					aria-label="Cancel Going"
-					class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-primary bg-transparent text-primary transition-colors hover:bg-primary/10 focus:outline-none"
+					class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-primary bg-transparent text-primary transition-colors hover:bg-primary/10 focus:outline-none disabled:opacity-50"
+					disabled={isLoading}
 				>
-					<X size={18} strokeWidth={3} />
+					{#if isLoading}
+						<Loader size={18} strokeWidth={3} class="animate-spin" />
+					{:else}
+						<X size={18} strokeWidth={3} />
+					{/if}
 				</button>
 			</div>
 
@@ -94,16 +154,21 @@
 					{isGoing
 					? 'cursor-default border-primary bg-primary text-white'
 					: 'cursor-pointer border-primary bg-transparent text-primary hover:bg-primary/5'}"
+				disabled={isLoading}
 			>
 				<div
 					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
 					{isGoing ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}"
 				>
-					<Ticket
-						size={18}
-						strokeWidth={2.5}
-						class="transition-transform duration-400 group-hover:-rotate-12"
-					/>
+					{#if isLoading}
+						<Loader size={18} strokeWidth={2.5} class="animate-spin" />
+					{:else}
+						<Ticket
+							size={18}
+							strokeWidth={2.5}
+							class="transition-transform duration-400 group-hover:-rotate-12"
+						/>
+					{/if}
 					<span class="text-sm font-bold tracking-tight">Mark as Going</span>
 				</div>
 
