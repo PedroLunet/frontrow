@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MapPin, X, Ticket, CheckCircle2 } from 'lucide-svelte';
+	import { MapPin, X, Ticket, CircleCheck } from 'lucide-svelte';
 
 	let { concert, closePopup } = $props();
 
@@ -111,7 +111,7 @@
 					class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-400 ease-[cubic-bezier(0.87,0,0.13,1)]
 					{isGoing ? 'scale-100 opacity-100' : 'pointer-events-none scale-110 opacity-0'}"
 				>
-					<CheckCircle2 size={18} strokeWidth={2.5} />
+					<CircleCheck size={18} strokeWidth={2.5} />
 					<span class="text-sm font-bold tracking-tight">You're Going!</span>
 				</div>
 			</button>
