@@ -33,7 +33,7 @@
 			onclick={prev}
 			disabled={currentIndex === 0}
 			aria-label="Previous concert"
-			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
 		>
 			<ChevronLeft size={14} strokeWidth={2.5} />
 		</button>
@@ -46,7 +46,7 @@
 			onclick={next}
 			disabled={currentIndex === concerts.length - 1}
 			aria-label="Next concert"
-			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
 		>
 			<ChevronRight size={14} strokeWidth={2.5} />
 		</button>
