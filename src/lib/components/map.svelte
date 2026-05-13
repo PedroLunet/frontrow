@@ -191,5 +191,5 @@
 
 <div
 	bind:this={mapContainer}
-	class="h-full w-full rounded-xl border border-gray-200 shadow-inner"
+	class="h-full w-full rounded-2xl border border-gray-200 shadow-inner"
 ></div>

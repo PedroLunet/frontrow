@@ -11,7 +11,6 @@
 	let showCancel = $state(false);
 	let isLoading = $state(false);
 
-	// Reference for the native dialog element
 	let descriptionModal: HTMLDialogElement;
 
 	onMount(() => {
@@ -84,21 +83,17 @@
 		year: 'numeric'
 	});
 
-	// --- Dialog Animation State ---
 	let isDescriptionOpen = $state(false);
 
 	function openDescription() {
 		descriptionModal.showModal();
-		// requestAnimationFrame ensures the browser paints the dialog in the DOM
-		// before we flip the opacity to 1, triggering the CSS transition perfectly.
 		requestAnimationFrame(() => {
 			isDescriptionOpen = true;
 		});
 	}
 
 	function closeDescription() {
-		isDescriptionOpen = false; // Triggers the CSS fade/scale out
-		// Wait for the 300ms Tailwind transition to finish before removing from top-layer
+		isDescriptionOpen = false;
 		setTimeout(() => {
 			descriptionModal.close();
 		}, 300);
@@ -106,7 +101,7 @@
 </script>
 
 <div
-	class="flex min-w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
+	class="flex max-w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
 >
 	{#if concert.image_url}
 		<div class="relative overflow-hidden p-1.5">
