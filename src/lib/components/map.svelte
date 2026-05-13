@@ -177,7 +177,7 @@
 
 					const el = document.createElement('div');
 					el.className =
-						'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-text-white shadow-lg ring-2 ring-white';
+						'flex h-7 aspect-square cursor-pointer items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-text-white shadow-lg ring-2 ring-white';
 					el.innerText = group.concerts.length.toString();
 
 					marker = new mapboxgl.Marker(el).setLngLat(coords).setPopup(popup).addTo(map);
