@@ -6,6 +6,7 @@
 	import { PUBLIC_MAPBOX_TOKEN, PUBLIC_MAPBOX_STYLE_URL } from '$env/static/public';
 
 	import Popup from './popup.svelte';
+	import MultiConcertPopup from './multiConcertPopup.svelte';
 
 	let { styleUrl = PUBLIC_MAPBOX_STYLE_URL, concerts = [], user = null } = $props();
 
@@ -132,16 +133,54 @@
 						.setPopup(popup)
 						.addTo(map);
 				} else {
+					const popupNode = document.createElement('div');
+
+					const popup = new mapboxgl.Popup({
+						offset: 25,
+						closeButton: false,
+						anchor: 'bottom',
+						focusAfterOpen: false
+					});
+
+					popup.on('open', () => {
+						const markerPos = map.project(coords);
+						const container = map.getContainer();
+
+						const targetX = container.offsetWidth / 2;
+						const targetY = container.offsetHeight / 2 + 150;
+
+						const distance = Math.sqrt(
+							Math.pow(markerPos.x - targetX, 2) + Math.pow(markerPos.y - targetY, 2)
+						);
+
+						if (distance < 10) return;
+
+						map.easeTo({
+							center: coords,
+							offset: [0, 150],
+							duration: 800,
+							essential: true,
+							easing: (t) => 1 - Math.pow(1 - t, 4)
+						});
+					});
+
+					mount(MultiConcertPopup, {
+						target: popupNode,
+						props: {
+							concerts: group.concerts,
+							closePopup: () => popup.remove(),
+							user
+						}
+					});
+
+					popup.setDOMContent(popupNode);
+
 					const el = document.createElement('div');
 					el.className =
-						'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white shadow-lg ring-2 ring-white transition-transform hover:scale-110';
+						'flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white shadow-lg ring-2 ring-white';
 					el.innerText = group.concerts.length.toString();
 
-					marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
-
-					el.addEventListener('click', () => {
-						map.easeTo({ center: coords, zoom: map.getZoom() + 1 });
-					});
+					marker = new mapboxgl.Marker(el).setLngLat(coords).setPopup(popup).addTo(map);
 				}
 
 				markers.push(marker);
