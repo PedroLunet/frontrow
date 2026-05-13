@@ -72,12 +72,8 @@
 
 		concerts.forEach((concert) => {
 			const venueId = concert.venues.id;
-
 			if (!groupedByVenue[venueId]) {
-				groupedByVenue[venueId] = {
-					venue: concert.venues,
-					concerts: []
-				};
+				groupedByVenue[venueId] = { venue: concert.venues, concerts: [] };
 			}
 			groupedByVenue[venueId].concerts.push(concert);
 		});
@@ -91,7 +87,34 @@
 				if (group.concerts.length === 1) {
 					const popupNode = document.createElement('div');
 
-					const popup = new mapboxgl.Popup({ offset: 25, closeButton: false });
+					const popup = new mapboxgl.Popup({
+						offset: 25,
+						closeButton: false,
+						anchor: 'bottom',
+						focusAfterOpen: false
+					});
+
+					popup.on('open', () => {
+						const markerPos = map.project(coords);
+						const container = map.getContainer();
+
+						const targetX = container.offsetWidth / 2;
+						const targetY = container.offsetHeight / 2 + 150;
+
+						const distance = Math.sqrt(
+							Math.pow(markerPos.x - targetX, 2) + Math.pow(markerPos.y - targetY, 2)
+						);
+
+						if (distance < 10) return;
+
+						map.easeTo({
+							center: coords,
+							offset: [0, 150],
+							duration: 800,
+							essential: true,
+							easing: (t) => 1 - Math.pow(1 - t, 4)
+						});
+					});
 
 					mount(Popup, {
 						target: popupNode,
@@ -115,6 +138,10 @@
 					el.innerText = group.concerts.length.toString();
 
 					marker = new mapboxgl.Marker(el).setLngLat(coords).addTo(map);
+
+					el.addEventListener('click', () => {
+						map.easeTo({ center: coords, zoom: map.getZoom() + 1 });
+					});
 				}
 
 				markers.push(marker);
