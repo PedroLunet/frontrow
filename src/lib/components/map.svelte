@@ -89,7 +89,7 @@
 					const popupNode = document.createElement('div');
 
 					const popup = new mapboxgl.Popup({
-						offset: 25,
+						offset: 40,
 						closeButton: false,
 						anchor: 'bottom',
 						focusAfterOpen: false
@@ -136,7 +136,7 @@
 					const popupNode = document.createElement('div');
 
 					const popup = new mapboxgl.Popup({
-						offset: 25,
+						offset: 30,
 						closeButton: false,
 						anchor: 'bottom',
 						focusAfterOpen: false
