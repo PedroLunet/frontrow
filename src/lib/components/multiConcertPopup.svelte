@@ -22,12 +22,12 @@
 </script>
 
 <div class="flex w-fit flex-col">
-	<div class="relative z-10 drop-shadow-md">
+	<div class="relative z-10 drop-shadow-lg">
 		<Popup concert={currentConcert} {closePopup} {user} />
 	</div>
 
 	<div
-		class="relative z-0 -mt-8 flex items-center justify-between rounded-b-3xl border-2 border-text-white bg-white px-6 pt-10 pb-3"
+		class="relative z-0 -mt-8 flex items-center justify-between rounded-b-3xl border-2 border-text-white bg-gray-50/90 px-6 pt-10 pb-3"
 	>
 		<button
 			onclick={prev}
