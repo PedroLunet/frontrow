@@ -106,7 +106,7 @@
 </script>
 
 <div
-	class="mb-4 flex min-w-64 flex-col overflow-hidden rounded-4xl border-2 border-accent bg-white font-sans text-text"
+	class="flex min-w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
 >
 	{#if concert.image_url}
 		<div class="relative overflow-hidden p-1.5">
@@ -228,7 +228,7 @@
 		// Clicking the dimmed backdrop closes the modal
 		if (e.target === descriptionModal) closeDescription();
 	}}
-	class="m-auto w-[90vw] max-w-lg rounded-4xl border-2 border-accent bg-white p-0 shadow-2xl transition-all
+	class="m-auto w-[90vw] max-w-lg rounded-4xl border-2 border-accent bg-white p-0 shadow-sm transition-all
          duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] backdrop:transition-all
          backdrop:duration-300 backdrop:ease-[cubic-bezier(0.2,0.8,0.2,1)] focus:outline-none
          {isDescriptionOpen
