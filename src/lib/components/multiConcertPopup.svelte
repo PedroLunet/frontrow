@@ -21,7 +21,7 @@
 	let currentConcert = $derived(concerts[currentIndex]);
 </script>
 
-<div class="flex max-w-64 flex-col">
+<div class="flex w-64 flex-col">
 	<div class="relative z-10 drop-shadow-lg">
 		<Popup concert={currentConcert} {closePopup} {user} />
 	</div>

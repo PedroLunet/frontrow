@@ -101,7 +101,7 @@
 </script>
 
 <div
-	class="flex max-w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
+	class="flex w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
 >
 	{#if concert.image_url}
 		<div class="relative overflow-hidden p-1.5">
