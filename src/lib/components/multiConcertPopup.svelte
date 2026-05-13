@@ -38,9 +38,22 @@
 			<ChevronLeft size={14} strokeWidth={2.5} />
 		</button>
 
-		<span class="text-xs font-medium text-text tabular-nums">
-			{currentIndex + 1} / {concerts.length}
-		</span>
+		<div class="flex flex-col items-center justify-center gap-1.5">
+			<span
+				class="text-[10px] leading-none font-bold tracking-widest text-gray-400 uppercase tabular-nums"
+			>
+				{currentIndex + 1} / {concerts.length}
+			</span>
+
+			<div class="flex items-center gap-1">
+				{#each concerts as concert, i (concert)}
+					<div
+						class="h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]
+            {i === currentIndex ? 'w-4 bg-primary' : 'w-1.5 bg-gray-300'}"
+					></div>
+				{/each}
+			</div>
+		</div>
 
 		<button
 			onclick={next}
