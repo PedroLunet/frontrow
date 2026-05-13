@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Popup from './popup.svelte';
+	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
 	let { concerts, closePopup, user = null } = $props();
 
@@ -21,28 +22,23 @@
 </script>
 
 <div class="flex w-fit flex-col">
+	<div class="relative z-10 drop-shadow-md">
+		<Popup concert={currentConcert} {closePopup} {user} />
+	</div>
+
 	<div
-		class="flex items-center justify-between rounded-t-4xl border-b border-gray-200 bg-gray-50 px-3 py-2"
+		class="relative z-0 -mt-8 flex items-center justify-between rounded-b-3xl border-2 border-text-white bg-white px-6 pt-10 pb-3"
 	>
 		<button
 			onclick={prev}
 			disabled={currentIndex === 0}
 			aria-label="Previous concert"
-			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
 		>
-			<svg
-				width="14"
-				height="14"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2.5"
-			>
-				<path d="M15 18l-6-6 6-6" />
-			</svg>
+			<ChevronLeft size={14} strokeWidth={2.5} />
 		</button>
 
-		<span class="text-xs font-medium text-gray-600">
+		<span class="text-xs font-medium text-text tabular-nums">
 			{currentIndex + 1} / {concerts.length}
 		</span>
 
@@ -50,20 +46,9 @@
 			onclick={next}
 			disabled={currentIndex === concerts.length - 1}
 			aria-label="Next concert"
-			class="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
 		>
-			<svg
-				width="14"
-				height="14"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2.5"
-			>
-				<path d="M9 18l6-6-6-6" />
-			</svg>
+			<ChevronRight size={14} strokeWidth={2.5} />
 		</button>
 	</div>
-
-	<Popup concert={currentConcert} {closePopup} {user} />
 </div>
