@@ -46,7 +46,7 @@
 			</span>
 
 			<div class="flex items-center gap-1">
-				{#each concerts as concert, i (concert)}
+				{#each concerts as concert, i (concert.id)}
 					<div
 						class="h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]
             {i === currentIndex ? 'w-4 bg-primary' : 'w-1.5 bg-gray-300'}"

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import { MapPin, X, Ticket, CircleCheck, Loader } from 'lucide-svelte';
 	import { supabase } from '$lib/supabaseclient.js';
 	import { userRsvpsStore } from '$lib/stores.js';
@@ -13,10 +12,11 @@
 
 	let descriptionModal: HTMLDialogElement;
 
-	onMount(() => {
-		return userRsvpsStore.subscribe((rsvps) => {
+	$effect(() => {
+		const unsubscribe = userRsvpsStore.subscribe((rsvps) => {
 			isGoing = !!rsvps[concert.id];
 		});
+		return unsubscribe;
 	});
 
 	$effect(() => {
