@@ -156,43 +156,40 @@
 </script>
 
 <form onsubmit={handleSubmit}>
-	<fieldset disabled={isSubmitting}>
-		<br />
 
-		<div>
-			<label for="artist">Artist (Required)</label>
-			<input id="artist" type="text" bind:value={artist} required />
-		</div>
+	<div>
+		<label for="artist">Artist (Required)</label>
+		<input id="artist" type="text" bind:value={artist} required />
+	</div>
 
-		<div>
-			<label for="name">Tour / Event Name (Optional)</label>
-			<input id="name" type="text" bind:value={concertName} />
-		</div>
+	<div>
+		<label for="name">Tour / Event Name (Optional)</label>
+		<input id="name" type="text" bind:value={concertName} />
+	</div>
 
-		<div>
-			<label for="date">Date</label>
-			<input id="date" type="date" bind:value={date} required />
-		</div>
+	<div>
+		<label for="date">Date</label>
+		<input id="date" type="date" bind:value={date} required />
+	</div>
 
-		<div>
-			<label for="time">Time</label>
-			<input id="time" type="time" bind:value={time} required />
-		</div>
+	<div>
+		<label for="time">Time</label>
+		<input id="time" type="time" bind:value={time} required />
+	</div>
 
-		<div>
-			<label for="imageUrl">Image URL</label>
-			<input id="imageUrl" type="url" bind:value={imageUrl} required />
-		</div>
+	<div>
+		<label for="imageUrl">Image URL</label>
+		<input id="imageUrl" type="url" bind:value={imageUrl} required />
+	</div>
 
-		<div>
-			<label for="description">Description</label>
-			<textarea id="description" bind:value={description} rows="4"></textarea>
-		</div>
+	<div>
+		<label for="description">Description</label>
+		<textarea id="description" bind:value={description} rows="4"></textarea>
+	</div>
 
-		<br />
+	<br />
 
-		<Button type="submit">
-			{isSubmitting ? 'Saving...' : 'Add Concert'}
-		</Button>
-	</fieldset>
-</form>
+	<Button type="submit">
+		{isSubmitting ? 'Saving...' : 'Add Concert'}
+	</Button>
+</Form.Field>
