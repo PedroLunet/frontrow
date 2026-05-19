@@ -2,6 +2,12 @@
 	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
 
+	interface Props {
+		onSuccess?: () => void;
+	}
+
+	let { onSuccess }: Props = $props();
+
 	// --- CONCERT FORM STATE ---
 	let artist = $state('');
 	let concertName = $state(''); // Maps to 'name' in DB
@@ -143,6 +149,7 @@
 			alert('Error saving concert.');
 		} else {
 			alert('Concert successfully added!');
+			onSuccess?.();
 		}
 	}
 </script>
