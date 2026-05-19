@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
-	import { Button } from "$lib/components/ui/button/index.js";
+	import { Button } from '$lib/components/ui/button/index.js';
 
 	interface Props {
 		onSuccess?: () => void;
