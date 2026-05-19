@@ -26,7 +26,7 @@
 
 	<div>
 		{#if userEmail}
-    <span class="hidden text-sm text-gray-600 sm:inline">{userEmail}</span>
+			<span class="hidden text-sm text-gray-600 sm:inline">{userEmail}</span>
 			<Button
 				variant="outline"
 				onclick={handleLogout}
