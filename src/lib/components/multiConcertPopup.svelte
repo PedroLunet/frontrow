@@ -27,7 +27,7 @@
 	</div>
 
 	<div
-		class="relative z-0 -mt-8.5 flex items-center justify-between rounded-b-3xl border-2 border-text-white bg-gray-50/90 px-6 pt-10 pb-2"
+		class="border-text-white relative z-0 -mt-8.5 flex items-center justify-between rounded-b-3xl border-2 bg-gray-50/90 px-6 pt-10 pb-2"
 	>
 		<button
 			onclick={prev}

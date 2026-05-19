@@ -101,7 +101,7 @@
 </script>
 
 <div
-	class="flex w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans text-text"
+	class="text-text flex w-64 flex-col overflow-hidden rounded-4xl border border-accent bg-white font-sans"
 >
 	{#if concert.image_url}
 		<div class="relative overflow-hidden p-1.5">
@@ -114,21 +114,21 @@
 			<button
 				onclick={closePopup}
 				aria-label="Close"
-				class="absolute top-4 right-4 flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-[0.5px] border-white/20 bg-text/60 backdrop-blur-md transition-all hover:scale-105 hover:bg-text/80 active:scale-95"
+				class="bg-text/60 hover:bg-text/80 absolute top-4 right-4 flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-[0.5px] border-white/20 backdrop-blur-md transition-all hover:scale-105 active:scale-95"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
 				></div>
-				<X size={14} strokeWidth={3} class="relative z-10 text-text-white" />
+				<X size={14} strokeWidth={3} class="text-text-white relative z-10" />
 			</button>
 
 			<div
-				class="absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 bg-text/60 px-2.5 py-1.5 backdrop-blur-md"
+				class="bg-text/60 absolute right-4 bottom-4 overflow-hidden rounded-2xl border-[0.5px] border-white/20 px-2.5 py-1.5 backdrop-blur-md"
 			>
 				<div
 					class="pointer-events-none absolute inset-0 bg-linear-to-tr from-white/5 to-white/20"
 				></div>
-				<p class="relative z-10 text-xs text-text-white">
+				<p class="text-text-white relative z-10 text-xs">
 					{formattedDate}
 				</p>
 			</div>
@@ -141,7 +141,7 @@
 		</h3>
 		<div class="mb-2 flex flex-row items-center gap-1 font-extralight">
 			<MapPin size={16} class="text-primary" />
-			<p class="text-sm text-text">{concert.venues?.name}</p>
+			<p class="text-text text-sm">{concert.venues?.name}</p>
 		</div>
 
 		<button
@@ -150,7 +150,7 @@
 			class="group mb-4 w-full text-left focus:outline-none"
 		>
 			<p
-				class="line-clamp-3 text-sm leading-tight font-extralight tracking-tight text-text transition-opacity group-hover:opacity-70"
+				class="text-text line-clamp-3 text-sm leading-tight font-extralight tracking-tight transition-opacity group-hover:opacity-70"
 			>
 				{concert.description}
 			</p>
@@ -227,14 +227,14 @@
          duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] backdrop:transition-all
          backdrop:duration-300 backdrop:ease-[cubic-bezier(0.2,0.8,0.2,1)] focus:outline-none
          {isDescriptionOpen
-		? 'scale-100 opacity-100 backdrop:bg-text/40 backdrop:backdrop-blur-sm'
+		? 'backdrop:bg-text/40 scale-100 opacity-100 backdrop:backdrop-blur-sm'
 		: 'scale-95 opacity-0 backdrop:bg-transparent backdrop:backdrop-blur-none'}"
 >
-	<div class="relative flex max-h-[80vh] flex-col p-6 pt-8 font-sans text-text">
+	<div class="text-text relative flex max-h-[80vh] flex-col p-6 pt-8 font-sans">
 		<button
 			onclick={closeDescription}
 			aria-label="Close modal"
-			class="absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl bg-accent/20 text-text transition-colors hover:bg-accent/40 active:scale-95"
+			class="text-text absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-xl bg-accent/20 transition-colors hover:bg-accent/40 active:scale-95"
 		>
 			<X size={16} strokeWidth={3} />
 		</button>
@@ -243,7 +243,7 @@
 
 		<div class="overflow-y-auto pr-2">
 			<p
-				class="text-sm leading-relaxed font-extralight tracking-tight whitespace-pre-wrap text-text"
+				class="text-text text-sm leading-relaxed font-extralight tracking-tight whitespace-pre-wrap"
 			>
 				{concert.description}
 			</p>
