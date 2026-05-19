@@ -2,13 +2,6 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@theme {
-	--color-primary: #ae1700;
-	--color-accent: #e0b0a9;
-	--color-text: #111111;
-	--color-text-white: #eaeaea;
-}
-
 .mapboxgl-popup-content {
 	padding: 0 !important;
 	background: transparent !important;
