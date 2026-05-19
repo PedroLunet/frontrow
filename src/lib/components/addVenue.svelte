@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
+	import { Button } from "$lib/components/ui/button/index.js";
 
 	let query = $state('');
 	let suggestions = $state<any[]>([]);
@@ -101,9 +102,9 @@
 		<ul>
 			{#each suggestions as suggestion (suggestion.mapbox_id)}
 				<li>
-					<button onclick={() => selectAndSaveVenue(suggestion)}>
+					<Button onclick={() => selectAndSaveVenue(suggestion)}>
 						<strong>{suggestion.name}</strong> - {suggestion.place_formatted}
-					</button>
+					</Button>
 				</li>
 			{/each}
 		</ul>

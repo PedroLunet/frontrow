@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Popup from './popup.svelte';
 	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
 
 	let { concerts, closePopup, user = null } = $props();
 
@@ -29,14 +30,9 @@
 	<div
 		class="border-text-white relative z-0 -mt-8.5 flex items-center justify-between rounded-b-3xl border-2 bg-gray-50/90 px-6 pt-10 pb-2"
 	>
-		<button
-			onclick={prev}
-			disabled={currentIndex === 0}
-			aria-label="Previous concert"
-			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
-		>
+		<Button onclick={prev} disabled={currentIndex === 0} aria-label="Previous concert">
 			<ChevronLeft size={14} strokeWidth={2.5} />
-		</button>
+		</Button>
 
 		<div class="flex flex-col items-center justify-center gap-1.5">
 			<span
@@ -55,13 +51,12 @@
 			</div>
 		</div>
 
-		<button
+		<Button
 			onclick={next}
 			disabled={currentIndex === concerts.length - 1}
 			aria-label="Next concert"
-			class="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-primary transition-colors hover:bg-gray-100 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
 		>
 			<ChevronRight size={14} strokeWidth={2.5} />
-		</button>
+		</Button>
 	</div>
 </div>

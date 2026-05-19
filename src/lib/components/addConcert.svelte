@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
+	import { Button } from "$lib/components/ui/button/index.js";
 
 	interface Props {
 		onSuccess?: () => void;
@@ -156,45 +157,6 @@
 
 <form onsubmit={handleSubmit}>
 	<fieldset disabled={isSubmitting}>
-		<div>
-			<label for="venue">Venue</label>
-			<div>
-				{#if isSearching}<span>(Searching...)</span>{/if}
-				<input
-					id="venue"
-					type="text"
-					bind:value={venueQuery}
-					oninput={handleVenueInput}
-					placeholder="Search venue..."
-					required
-				/>
-			</div>
-
-			{#if dbSuggestions.length > 0 || mapboxSuggestions.length > 0}
-				<ul>
-					{#each dbSuggestions as dbVenue}
-						<li>
-							<button type="button" onclick={() => selectVenue('db', dbVenue)}>
-								<strong>{dbVenue.name}</strong> <em>(Already in Database)</em>
-							</button>
-						</li>
-					{/each}
-
-					{#each mapboxSuggestions as mbVenue}
-						<li>
-							<button type="button" onclick={() => selectVenue('mapbox', mbVenue)}>
-								<strong>{mbVenue.name}</strong> - {mbVenue.place_formatted}
-							</button>
-						</li>
-					{/each}
-				</ul>
-			{/if}
-
-			{#if selectedVenueId && dbSuggestions.length === 0 && mapboxSuggestions.length === 0}
-				<p style="color: green;">✓ Selected: {selectedVenueName}</p>
-			{/if}
-		</div>
-
 		<br />
 
 		<div>
@@ -229,8 +191,8 @@
 
 		<br />
 
-		<button type="submit">
+		<Button type="submit">
 			{isSubmitting ? 'Saving...' : 'Add Concert'}
-		</button>
+		</Button>
 	</fieldset>
 </form>

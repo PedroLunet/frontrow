@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabaseclient.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 
 	let email = $state('');
 	let otp = $state('');
@@ -86,13 +87,13 @@
 				/>
 			</div>
 
-			<button
+			<Button
 				type="submit"
 				disabled={loading}
 				class="w-full rounded-lg bg-black px-4 py-3 font-medium text-white transition-all hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 			>
 				{loading ? 'Sending...' : 'Send Code'}
-			</button>
+			</Button>
 		</form>
 	{:else}
 		<form onsubmit={verifyOtp} class="space-y-4">
@@ -112,15 +113,15 @@
 				/>
 			</div>
 
-			<button
+			<Button
 				type="submit"
 				disabled={loading}
 				class="w-full rounded-lg bg-black px-4 py-3 font-medium text-white transition-all hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 			>
 				{loading ? 'Verifying...' : 'Log In'}
-			</button>
+			</Button>
 
-			<button
+			<Button
 				type="button"
 				onclick={() => {
 					step = 1;
@@ -130,7 +131,7 @@
 				class="mt-2 w-full py-2 text-sm font-medium text-gray-500 transition-colors hover:text-black hover:underline focus:outline-none"
 			>
 				Wait, I need to change my email
-			</button>
+			</Button>
 		</form>
 	{/if}
 </main>

@@ -4,6 +4,7 @@
 	import { Dialog } from 'bits-ui';
 	import { X } from 'lucide-svelte';
 	import AddConcert from './addConcert.svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
 
 	let userEmail = $state<string | null>(null);
 
@@ -65,20 +66,16 @@
 						</Dialog.Content>
 					</Dialog.Portal>
 				</Dialog.Root>
-				<button
+				<Button
+					variant="outline"
 					onclick={handleLogout}
-					class="text-sm font-medium text-red-600 transition-colors hover:text-red-800"
+					class="text-red-600 transition-colors hover:text-red-800"
 				>
 					Log Out
-				</button>
+				</Button>
 			</div>
 		{:else}
-			<a
-				href="/login"
-				class="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-all hover:bg-gray-800"
-			>
-				Log In
-			</a>
+			<Button href="/login">Log In</Button>
 		{/if}
 	</div>
 </nav>
