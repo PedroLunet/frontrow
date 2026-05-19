@@ -25,7 +25,16 @@
 	<h1 class="text-xl font-bold tracking-tight text-black">FrontRow</h1>
 
 	<div>
-		{#if userEmail}{:else}
+		{#if userEmail}
+    <span class="hidden text-sm text-gray-600 sm:inline">{userEmail}</span>
+			<Button
+				variant="outline"
+				onclick={handleLogout}
+				class="text-red-600 transition-colors hover:text-red-800"
+			>
+				Log Out
+			</Button>
+		{:else}
 			<Button href="/login">Log In</Button>
 		{/if}
 	</div>
