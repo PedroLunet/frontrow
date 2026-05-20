@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
-	import { Button } from '$lib/components/ui/button/index.js';
+	import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { concertFormSchema, type ConcertFormSchema } from '$lib/schemas/concertSchema';
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod4 } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
-  import { Dialog } from 'bits-ui';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import Textarea from './ui/textarea/textarea.svelte';
 
 	interface Props {
 		onSuccess?: () => void;
@@ -165,156 +166,106 @@
 	}
 </script>
 
-<form method="POST" use:enhance class="space-y-6">
-	<Form.Field {form} name="artist">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Artist (Required)</Form.Label>
-				<Input
-					{...props}
-					type="text"
-					bind:value={$formData.artist}
-					placeholder="Enter artist name"
-				/>
-			{/snippet}
-		</Form.Control>
-		<Form.Description>The name of the artist performing</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
+<Dialog.Root>
+	<form method="POST" use:enhance>
+		<Dialog.Trigger type="button"><Button variant="outline">Open Dialog</Button></Dialog.Trigger>
+		<Dialog.Content class='max-h-64'>
+			<Dialog.Header>
+				<Dialog.Title>Edit profile</Dialog.Title>
+				<Dialog.Description>
+					Make changes to your profile here. Click save when you&apos;re done.
+				</Dialog.Description>
+			</Dialog.Header>
+			<Form.Field {form} name="artist">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Artist (Required)</Form.Label>
+						<Input
+							{...props}
+							type="text"
+							bind:value={$formData.artist}
+							placeholder="Enter artist name"
+						/>
+					{/snippet}
+				</Form.Control>
+				<Form.Description>The name of the artist performing</Form.Description>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<Form.Field {form} name="concertName">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Tour / Event Name (Optional)</Form.Label>
-				<Input
-					{...props}
-					type="text"
-					bind:value={$formData.concertName}
-					placeholder="Enter tour or event name"
-				/>
-			{/snippet}
-		</Form.Control>
-		<Form.Description>Give the concert a specific tour or event name</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
+			<Form.Field {form} name="concertName">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Tour / Event Name (Optional)</Form.Label>
+						<Input
+							{...props}
+							type="text"
+							bind:value={$formData.concertName}
+							placeholder="Enter tour or event name"
+						/>
+					{/snippet}
+				</Form.Control>
+				<Form.Description>Give the concert a specific tour or event name</Form.Description>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<Form.Field {form} name="date">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Date (Required)</Form.Label>
-				<Input {...props} type="date" bind:value={$formData.date} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+			<Form.Field {form} name="date">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Date (Required)</Form.Label>
+						<Input {...props} type="date" bind:value={$formData.date} />
+					{/snippet}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<Form.Field {form} name="time">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Time (Required)</Form.Label>
-				<Input {...props} type="time" bind:value={$formData.time} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+			<Form.Field {form} name="time">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Time (Required)</Form.Label>
+						<Input {...props} type="time" bind:value={$formData.time} />
+					{/snippet}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<Form.Field {form} name="imageUrl">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Image URL (Required)</Form.Label>
-				<Input
-					{...props}
-					type="url"
-					bind:value={$formData.imageUrl}
-					placeholder="https://example.com/image.jpg"
-				/>
-			{/snippet}
-		</Form.Control>
-		<Form.Description>Concert poster or artist image</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
+			<Form.Field {form} name="imageUrl">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Image URL (Required)</Form.Label>
+						<Input
+							{...props}
+							type="url"
+							bind:value={$formData.imageUrl}
+							placeholder="https://example.com/image.jpg"
+						/>
+					{/snippet}
+				</Form.Control>
+				<Form.Description>Concert poster or artist image</Form.Description>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<Form.Field {form} name="description">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Description (Optional)</Form.Label>
-				<textarea
-					{...props}
-					bind:value={$formData.description}
-					placeholder="Enter concert details and description"
-					rows="4"
-					class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-				></textarea>
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+			<Form.Field {form} name="description">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>Description (Optional)</Form.Label>
+						<Textarea
+							{...props}
+							bind:value={$formData.description}
+							placeholder="Enter concert details and description"
+						></Textarea>
+					{/snippet}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
 
-	<!-- Venue Selection Field -->
-	<div class="space-y-2">
-		<label
-			for="venue"
-			class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-		>
-			Venue (Required)
-		</label>
-		<div class="relative">
-			<Input
-				id="venue"
-				type="text"
-				value={venueQuery}
-				onchange={handleVenueInput}
-				oninput={handleVenueInput}
-				placeholder="Search for a venue..."
-				class="w-full"
-			/>
-			{#if isSearching}
-				<div class="absolute top-1/2 right-3 -translate-y-1/2">
-					<div
-						class="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"
-					></div>
-				</div>
-			{/if}
-		</div>
-
-		<!-- Venue Suggestions -->
-		{#if dbSuggestions.length > 0 || mapboxSuggestions.length > 0}
-			<div class="absolute z-10 mt-1 w-full rounded-md border border-input bg-white shadow-md">
-				{#each dbSuggestions as venue}
-					<button
-						type="button"
-						onclick={() => selectVenue('db', venue)}
-						class="w-full px-3 py-2 text-left text-sm hover:bg-accent focus:bg-accent focus:outline-none"
-					>
-						<span class="font-medium">{venue.name}</span>
-						<span class="ml-2 text-xs text-muted-foreground">(In Database)</span>
-					</button>
-				{/each}
-
-				{#each mapboxSuggestions as suggestion}
-					<button
-						type="button"
-						onclick={() => selectVenue('mapbox', suggestion)}
-						class="w-full px-3 py-2 text-left text-sm hover:bg-accent focus:bg-accent focus:outline-none"
-					>
-						<span class="font-medium">{suggestion.name}</span>
-						<span class="ml-2 text-xs text-muted-foreground">(Adding new venue...)</span>
-					</button>
-				{/each}
-			</div>
-		{/if}
-
-		<!-- Selected Venue Display -->
-		{#if selectedVenueName}
-			<div class="mt-2 rounded-md bg-accent/20 p-2">
-				<p class="text-sm font-medium">
-					Selected: <span class="text-primary">{selectedVenueName}</span>
-				</p>
-			</div>
-		{/if}
-	</div>
-
-	<Form.Button disabled={$submitting} type="submit" class="w-full">
-		{$submitting ? 'Saving...' : 'Add Concert'}
-	</Form.Button>
-</form>
+			<Dialog.Footer>
+				<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
+					Cancel
+				</Dialog.Close>
+				<Form.Button disabled={$submitting} type="submit">
+					{$submitting ? 'Saving...' : 'Add Concert'}
+				</Form.Button>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</form>
+</Dialog.Root>

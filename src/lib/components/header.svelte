@@ -34,6 +34,7 @@
 			>
 				Log Out
 			</Button>
+			<AddConcert />
 		{:else}
 			<Button href="/login">Log In</Button>
 		{/if}
