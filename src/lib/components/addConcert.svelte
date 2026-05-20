@@ -8,6 +8,7 @@
 	import { defaults, superForm } from 'sveltekit-superforms';
 	import { zod4 } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
+  import { Dialog } from 'bits-ui';
 
 	interface Props {
 		onSuccess?: () => void;
