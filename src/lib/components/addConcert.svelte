@@ -169,96 +169,97 @@
 <Dialog.Root>
 	<form method="POST" use:enhance>
 		<Dialog.Trigger type="button"><Button variant="outline">Open Dialog</Button></Dialog.Trigger>
-		<Dialog.Content class='max-h-64'>
-			<Dialog.Header>
+		<Dialog.Content class="flex max-h-[90vh] flex-col p-0">
+			<Dialog.Header class="px-6 pt-6">
 				<Dialog.Title>Edit profile</Dialog.Title>
 				<Dialog.Description>
 					Make changes to your profile here. Click save when you&apos;re done.
 				</Dialog.Description>
 			</Dialog.Header>
-			<Form.Field {form} name="artist">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Artist (Required)</Form.Label>
-						<Input
-							{...props}
-							type="text"
-							bind:value={$formData.artist}
-							placeholder="Enter artist name"
-						/>
-					{/snippet}
-				</Form.Control>
-				<Form.Description>The name of the artist performing</Form.Description>
-				<Form.FieldErrors />
-			</Form.Field>
+			<div class="flex-1 space-y-4 overflow-y-auto px-6">
+				<Form.Field {form} name="artist">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Artist (Required)</Form.Label>
+							<Input
+								{...props}
+								type="text"
+								bind:value={$formData.artist}
+								placeholder="Enter artist name"
+							/>
+						{/snippet}
+					</Form.Control>
+					<Form.Description>The name of the artist performing</Form.Description>
+					<Form.FieldErrors />
+				</Form.Field>
 
-			<Form.Field {form} name="concertName">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Tour / Event Name (Optional)</Form.Label>
-						<Input
-							{...props}
-							type="text"
-							bind:value={$formData.concertName}
-							placeholder="Enter tour or event name"
-						/>
-					{/snippet}
-				</Form.Control>
-				<Form.Description>Give the concert a specific tour or event name</Form.Description>
-				<Form.FieldErrors />
-			</Form.Field>
+				<Form.Field {form} name="concertName">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Tour / Event Name (Optional)</Form.Label>
+							<Input
+								{...props}
+								type="text"
+								bind:value={$formData.concertName}
+								placeholder="Enter tour or event name"
+							/>
+						{/snippet}
+					</Form.Control>
+					<Form.Description>Give the concert a specific tour or event name</Form.Description>
+					<Form.FieldErrors />
+				</Form.Field>
 
-			<Form.Field {form} name="date">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Date (Required)</Form.Label>
-						<Input {...props} type="date" bind:value={$formData.date} />
-					{/snippet}
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
+				<Form.Field {form} name="date">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Date (Required)</Form.Label>
+							<Input {...props} type="date" bind:value={$formData.date} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
 
-			<Form.Field {form} name="time">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Time (Required)</Form.Label>
-						<Input {...props} type="time" bind:value={$formData.time} />
-					{/snippet}
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
+				<Form.Field {form} name="time">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Time (Required)</Form.Label>
+							<Input {...props} type="time" bind:value={$formData.time} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
 
-			<Form.Field {form} name="imageUrl">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Image URL (Required)</Form.Label>
-						<Input
-							{...props}
-							type="url"
-							bind:value={$formData.imageUrl}
-							placeholder="https://example.com/image.jpg"
-						/>
-					{/snippet}
-				</Form.Control>
-				<Form.Description>Concert poster or artist image</Form.Description>
-				<Form.FieldErrors />
-			</Form.Field>
+				<Form.Field {form} name="imageUrl">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Image URL (Required)</Form.Label>
+							<Input
+								{...props}
+								type="url"
+								bind:value={$formData.imageUrl}
+								placeholder="https://example.com/image.jpg"
+							/>
+						{/snippet}
+					</Form.Control>
+					<Form.Description>Concert poster or artist image</Form.Description>
+					<Form.FieldErrors />
+				</Form.Field>
 
-			<Form.Field {form} name="description">
-				<Form.Control>
-					{#snippet children({ props })}
-						<Form.Label>Description (Optional)</Form.Label>
-						<Textarea
-							{...props}
-							bind:value={$formData.description}
-							placeholder="Enter concert details and description"
-						></Textarea>
-					{/snippet}
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-
-			<Dialog.Footer>
+				<Form.Field {form} name="description">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Description (Optional)</Form.Label>
+							<Textarea
+								{...props}
+								bind:value={$formData.description}
+								placeholder="Enter concert details and description"
+							></Textarea>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			</div>
+			<Dialog.Footer class="px-6 pb-6">
 				<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
 					Cancel
 				</Dialog.Close>
