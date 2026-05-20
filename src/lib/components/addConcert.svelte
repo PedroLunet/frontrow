@@ -169,14 +169,15 @@
 <Dialog.Root>
 	<form method="POST" use:enhance>
 		<Dialog.Trigger type="button"><Button variant="outline">Open Dialog</Button></Dialog.Trigger>
-		<Dialog.Content class="flex max-h-[90vh] flex-col p-0">
-			<Dialog.Header class="px-6 pt-6">
-				<Dialog.Title>Edit profile</Dialog.Title>
+		<Dialog.Content class="flex max-h-[90vh] flex-col">
+			<Dialog.Header>
+				<Dialog.Title class="text-lg font-semibold">Add Concert</Dialog.Title>
 				<Dialog.Description>
-					Make changes to your profile here. Click save when you&apos;re done.
+					Can't find the concert you're looking for on the map? Add it here and help grow the
+					FrontRow community!
 				</Dialog.Description>
 			</Dialog.Header>
-			<div class="flex-1 space-y-4 overflow-y-auto px-6">
+			<div class="flex-1 space-y-4 overflow-auto px-2">
 				<Form.Field {form} name="artist">
 					<Form.Control>
 						{#snippet children({ props })}
@@ -219,16 +220,6 @@
 					<Form.FieldErrors />
 				</Form.Field>
 
-				<Form.Field {form} name="time">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Time (Required)</Form.Label>
-							<Input {...props} type="time" bind:value={$formData.time} />
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-
 				<Form.Field {form} name="imageUrl">
 					<Form.Control>
 						{#snippet children({ props })}
@@ -259,7 +250,7 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
-			<Dialog.Footer class="px-6 pb-6">
+			<Dialog.Footer>
 				<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
 					Cancel
 				</Dialog.Close>
