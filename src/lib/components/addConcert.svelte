@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { PUBLIC_MAPBOX_TOKEN } from '$env/static/public';
 	import { supabase } from '$lib/supabaseclient.js';
 	import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -10,6 +9,7 @@
 	import { toast } from 'svelte-sonner';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import Textarea from './ui/textarea/textarea.svelte';
+	import AddVenue from './addVenue.svelte';
 
 	interface Props {
 		onSuccess?: () => void;
@@ -17,16 +17,8 @@
 
 	let { onSuccess }: Props = $props();
 
-	// --- VENUE SEARCH STATE ---
-	let venueQuery = $state('');
-	let dbSuggestions = $state<any[]>([]);
-	let mapboxSuggestions = $state<any[]>([]);
-	let isSearching = $state(false);
 	let selectedVenueId = $state<string | null>(null);
 	let selectedVenueName = $state('');
-
-	let sessionToken = $state(crypto.randomUUID());
-	let searchTimeout: ReturnType<typeof setTimeout>;
 
 	const form = superForm(defaults(zod4(concertFormSchema)), {
 		validators: zod4(concertFormSchema),
@@ -65,7 +57,6 @@
 				form.reset();
 				selectedVenueId = null;
 				selectedVenueName = '';
-				venueQuery = '';
 				onSuccess?.();
 			} catch (err) {
 				console.error('Failed to save concert:', err);
@@ -76,93 +67,9 @@
 
 	const { form: formData, enhance, submitting } = form;
 
-	function handleVenueInput(e: Event) {
-		const val = (e.target as HTMLInputElement).value;
-		venueQuery = val;
-		selectedVenueId = null;
-
-		clearTimeout(searchTimeout);
-
-		if (val.length < 3) {
-			dbSuggestions = [];
-			mapboxSuggestions = [];
-			return;
-		}
-
-		searchTimeout = setTimeout(async () => {
-			isSearching = true;
-
-			try {
-				const [dbRes, mapboxRes] = await Promise.all([
-					supabase.from('venues').select('*').ilike('name', `%${val}%`).limit(3),
-
-					fetch(
-						`https://api.mapbox.com/search/searchbox/v1/suggest?q=${encodeURIComponent(
-							val
-						)}&language=pt&country=pt&session_token=${sessionToken}&access_token=${PUBLIC_MAPBOX_TOKEN}&types=poi,address&limit=5`
-					).then((res) => res.json())
-				]);
-
-				dbSuggestions = dbRes.data || [];
-
-				const dbMapboxIds = dbSuggestions.map((dbVenue) => dbVenue.mapbox_id);
-				const rawMapboxSuggestions = mapboxRes.suggestions || [];
-
-				mapboxSuggestions = rawMapboxSuggestions.filter(
-					(mb) => !dbMapboxIds.includes(mb.mapbox_id)
-				);
-			} catch (err) {
-				console.error('Search failed:', err);
-			} finally {
-				isSearching = false;
-			}
-		}, 300);
-	}
-
-	async function selectVenue(type: 'db' | 'mapbox', suggestion: any) {
-		if (type === 'db') {
-			selectedVenueId = suggestion.id;
-			selectedVenueName = suggestion.name;
-			venueQuery = suggestion.name;
-			dbSuggestions = [];
-			mapboxSuggestions = [];
-		} else {
-			isSearching = true;
-			try {
-				const retrieveRes = await fetch(
-					`https://api.mapbox.com/search/searchbox/v1/retrieve/${suggestion.mapbox_id}?session_token=${sessionToken}&access_token=${PUBLIC_MAPBOX_TOKEN}`
-				);
-				const retrieveData = await retrieveRes.json();
-				const feature = retrieveData.features[0];
-				const [lng, lat] = feature.geometry.coordinates;
-
-				const { data, error } = await supabase
-					.from('venues')
-					.insert({
-						id: crypto.randomUUID(),
-						name: suggestion.name,
-						coordinates: `POINT(${lng} ${lat})`,
-						mapbox_id: suggestion.mapbox_id,
-						created_at: new Date().toISOString()
-					})
-					.select()
-					.single();
-
-				if (error) throw error;
-
-				selectedVenueId = data.id;
-				selectedVenueName = data.name;
-				venueQuery = data.name;
-				sessionToken = crypto.randomUUID();
-				dbSuggestions = [];
-				mapboxSuggestions = [];
-			} catch (err) {
-				console.error('Failed to create new venue:', err);
-				toast.error('Could not save venue.');
-			} finally {
-				isSearching = false;
-			}
-		}
+	function onVenueSelect(venue: { id: string; name: string }) {
+		selectedVenueId = venue.id;
+		selectedVenueName = venue.name;
 	}
 </script>
 
@@ -249,6 +156,11 @@
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
+
+				<div class="space-y-2">
+					<span class="text-sm font-medium">Venue (Required)</span>
+					<AddVenue venueSelect={onVenueSelect} />
+				</div>
 			</div>
 			<Dialog.Footer>
 				<Dialog.Close type="button" class={buttonVariants({ variant: 'outline' })}>
