@@ -1,50 +1,49 @@
 <script lang="ts">
+	import Map from '$lib/components/map.svelte';
+	import Header from '$lib/components/header.svelte';
 	import { onMount } from 'svelte';
 	import { supabase } from '$lib/supabaseclient.js';
+	import { userRsvpsStore } from '$lib/stores.js';
 
-	let userEmail = $state<string | null>(null);
+	let concerts = $state<any[]>([]);
+	let user = $state<any>(null);
 
 	onMount(async () => {
-		// Check who is visiting the map
-		const { data } = await supabase.auth.getUser();
-		if (data.user) {
-			userEmail = data.user.email || null;
+		const {
+			data: { user: currentUser }
+		} = await supabase.auth.getUser();
+		user = currentUser;
+
+		const { data, error } = await supabase
+			.from('concerts')
+			.select('*, venues(id, name, coordinates)');
+
+		if (error) {
+			console.error('Error fetching concerts:', error);
+		} else {
+			concerts = data || [];
+		}
+
+		if (user) {
+			const { data: rsvps } = await supabase
+				.from('user_concerts')
+				.select('concert_id')
+				.eq('user_id', user.id);
+
+			if (rsvps) {
+				const map: Record<string, boolean> = {};
+				for (const r of rsvps) {
+					map[r.concert_id] = true;
+				}
+				userRsvpsStore.set(map);
+			}
 		}
 	});
-
-	async function handleLogout() {
-		await supabase.auth.signOut();
-		userEmail = null; // Instantly update the UI
-	}
 </script>
 
-<main class="flex h-screen w-full flex-col bg-gray-100">
-	<nav class="relative z-10 flex items-center justify-between bg-white px-6 py-4 shadow-sm">
-		<h1 class="text-xl font-bold tracking-tight text-black">FrontRow</h1>
-
-		<div>
-			{#if userEmail}
-				<div class="flex items-center gap-4">
-					<span class="hidden text-sm text-gray-600 sm:inline">{userEmail}</span>
-					<button
-						onclick={handleLogout}
-						class="text-sm font-medium text-red-600 transition-colors hover:text-red-800"
-					>
-						Log Out
-					</button>
-				</div>
-			{:else}
-				<a
-					href="/login"
-					class="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-all hover:bg-gray-800"
-				>
-					Log In
-				</a>
-			{/if}
-		</div>
-	</nav>
-
-	<div class="flex flex-1 items-center justify-center bg-gray-200">
-		<p class="text-lg font-medium text-gray-400">[ Mapbox will go here ]</p>
+<main class="flex h-screen w-full flex-col">
+	<Header />
+	<div class="h-full w-full p-6 pt-2">
+		<Map {concerts} {user} />
 	</div>
 </main>
